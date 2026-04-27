@@ -9,7 +9,7 @@ st.dataframe(df.head())
 
 #Q1 Visual
 st.subheader("Q1: How do sleep hours and study hours per day influence students stress levels?")
-df_sample=df.sample(10000)
+df_sample=df.sample(200)
 
 df_sample["sleep_group"] = pd.cut(
     df_sample["sleep_hours"],
