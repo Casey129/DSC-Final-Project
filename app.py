@@ -4,21 +4,21 @@ import plotly.express as px
 
 st.title("Student Mental Health & Burnout Final Project")
 
-df = pd.read_csv("data/sample_student_mental_health_burnout_1M.csv")
+df = pd.read_csv("data/sample_student_mental_health_burnout_200.csv")
 st.dataframe(df.head())
 
 #Q1 Visual
 st.subheader("Q1: How do sleep hours and study hours per day influence students stress levels?")
-df_sample=df.sample(200)
 
-df_sample["sleep_group"] = pd.cut(
-    df_sample["sleep_hours"],
+
+df["sleep_group"] = pd.cut(
+    df["sleep_hours"],
     bins=5,
     labels=["Very Low", "Low", "Moderate", "High", "Very High"]
 )
 
 fig = px.scatter(
-    df_sample,
+    df,
     x="sleep_hours",
     y="stress_level",
     opacity=0.3,
@@ -37,22 +37,21 @@ st.plotly_chart(fig, width="stretch")
 #Q2 Visual 
 st.subheader("Q2: How does exam pressure influence academic performance and mental health?​")
 
-df_sample=df.sample(200)
 
-df_sample["pressure_group"] = pd.qcut(
-    df_sample["exam_pressure"],
+df["pressure_group"] = pd.qcut(
+    df["exam_pressure"],
     3,
     labels=["Low", "Moderate", "High"],
 )
 
-df_sample["mental_health_group"] = pd.qcut(
-    df_sample["mental_health_index"],
+df["mental_health_group"] = pd.qcut(
+    df["mental_health_index"],
     2,
     labels=["Low","High"]
 )
 
 fig=px.box(
-    df_sample,
+    df,
     x="pressure_group",
     y="academic_performance",
     color="mental_health_group",
@@ -72,22 +71,21 @@ st.plotly_chart(fig, width="stretch")
 #Q3 Visual
 st.subheader("Q3: How do lifestyle behaviors impact students mental health?")
 
-df_sample=df.sample(200)
 
-df_sample["screen_group"]= pd.qcut(
-    df_sample["screen_time"],
+df["screen_group"]= pd.qcut(
+    df["screen_time"],
     3,
     labels=["Low", "Medium", "High"]
 )
 
-df_sample["activity_group"] = pd.qcut(
-    df_sample["physical_activity"],
+df["activity_group"] = pd.qcut(
+    df["physical_activity"],
     2,
     labels=["Low","High"]
 )
 
 fig=px.bar(
-    df_sample,
+    df,
     x="screen_group",
     y="mental_health_index",
     color="activity_group",
@@ -107,16 +105,15 @@ st.plotly_chart(fig, width="stretch")
 
 st.subheader("Q4: Does a social support system reduce the negative effects of stress and anxiety on burnout?​")
 
-df_sample=df.sample(200)
 
-df_sample['support_group']=pd.qcut(
-    df_sample["social_support"],
+df['support_group']=pd.qcut(
+    df["social_support"],
     4,
     labels=["Very Low", "Low", "High", "Very High"]
 )
 
 fig=px.histogram(
-    df_sample,
+    df,
     x="burnout_score",
     nbins=30,
     color= "support_group",
@@ -135,10 +132,8 @@ st.plotly_chart(fig, width="stretch")
 
 st.subheader("Q5: How does financial stress and family expectations impact mental health and academic performance?")
 
-df_sample=df.sample(200)
-
 fig=px.density_heatmap(
-    df_sample,
+    df,
     x="financial_stress",
     y="family_expectation",
     title="Financial Stress vs Family Expectations"
