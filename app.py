@@ -37,7 +37,7 @@ st.plotly_chart(fig, width="stretch")
 #Q2 Visual 
 st.subheader("Q2: How does exam pressure influence academic performance and mental health?​")
 
-df_sample=df.sample(50000)
+df_sample=df.sample(200)
 
 df_sample["pressure_group"] = pd.qcut(
     df_sample["exam_pressure"],
@@ -72,7 +72,7 @@ st.plotly_chart(fig, width="stretch")
 #Q3 Visual
 st.subheader("Q3: How do lifestyle behaviors impact students mental health?")
 
-df_sample=df.sample(10000)
+df_sample=df.sample(200)
 
 df_sample["screen_group"]= pd.qcut(
     df_sample["screen_time"],
@@ -107,7 +107,7 @@ st.plotly_chart(fig, width="stretch")
 
 st.subheader("Q4: Does a social support system reduce the negative effects of stress and anxiety on burnout?​")
 
-df_sample=df.sample(10000)
+df_sample=df.sample(200)
 
 df_sample['support_group']=pd.qcut(
     df_sample["social_support"],
@@ -135,7 +135,7 @@ st.plotly_chart(fig, width="stretch")
 
 st.subheader("Q5: How does financial stress and family expectations impact mental health and academic performance?")
 
-df_sample=df.sample(10000)
+df_sample=df.sample(200)
 
 fig=px.density_heatmap(
     df_sample,
