@@ -4,7 +4,7 @@ import plotly.express as px
 
 st.title("Student Mental Health & Burnout Final Project")
 
-df=pd.read_csv("data/student_mental_health_burnout_200.csv")
+df = pd.read_csv("data/sample_student_mental_health_burnout_1M.csv")
 st.dataframe(df.head())
 
 #Q1 Visual
