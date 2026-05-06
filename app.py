@@ -29,7 +29,10 @@ four_group_colors = {
 }
 
 st.sidebar.header("Dashboard Controls")
-sample_size = st.sidebar.slider("Sample Size", min_value=100, max_value=199, value=199, step=100)
+sample_size = st.sidebar.slider(
+    "Sample Size", min_value=10, max_value=len(df), value=len(df), step=1  
+)
+
 year_filter = st.sidebar.multiselect(
     "Filter by Academic Year",
     options=sorted(df["academic_year"].unique()),
@@ -39,7 +42,7 @@ df = df[df["academic_year"].isin(year_filter)]
 
 #Q1 Visual
 st.subheader("How do sleep hours and study hours per day influence students stress levels?")
-df_sample=df.sample(sample_size)
+df_sample = df.sample(n=min(sample_size, len(df)))
 
 
 df["sleep_group"] = pd.cut(
@@ -52,7 +55,7 @@ fig = px.scatter(
     df,
     x="sleep_hours",
     y="stress_level",
-    opacity=0.3,
+    opacity=0.5,
     color="sleep_group",
     color_discrete_map=sleep_color_map,
     category_orders={"sleep_group": ["Very Low", "Low", "Moderate", "High", "Very High"]},
@@ -88,8 +91,10 @@ df["mental_health_group"] = pd.qcut(
     labels=["Low","High"]
 )
 
+df_sample = df.sample(n=min(sample_size, len(df)))
+
 fig=px.box(
-    df,
+    df_sample,
     x="pressure_group",
     y="academic_performance",
     color="mental_health_group",
@@ -146,11 +151,12 @@ st.caption(
     )
 #Q4
 st.subheader("Does a social support system reduce the negative effects of stress and anxiety on burnout?​")
-df_sample = df.sample(n=min(sample_size, len(df)))
 
-df_sample["support_level"] = df_sample["social_support"].apply(
+df["support_level"] = df["social_support"].apply(
     lambda x: "Strong Support" if x >= 5 else "Weak Support"
 )
+
+df_sample = df.sample(n=min(sample_size, len(df)))
 
 col1, col2, col3 = st.columns(3)
 
@@ -174,9 +180,6 @@ with col3:
     st.write(
         "High burnout cases are more common among students with weak social support."
     )
-df['support_level'] = df['social_support'].apply(
-    lambda x: 'Strong Support' if x>= 5 else "Weak Support"         
-)
 
 fig = px.histogram(
     df_sample,
@@ -212,8 +215,10 @@ fig=px.density_heatmap(
     df,
     x="financial_stress",
     y="family_expectation",
+    z="mental_health_index",
+    histfunc="avg",
     color_continuous_scale="RdYlBu_r",
-    title="Financial Stress vs Family Expectations"
+    title="Financial Stress vs Family Expectations. (Avg Mental Health Index)"
 )
 
 fig.update_layout(
@@ -223,4 +228,7 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, width="stretch")
+st.caption("explination"
+
+)
  
