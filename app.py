@@ -76,7 +76,7 @@ df = df[df["academic_year"].isin(year_filter)]
 
 #Q1 Visual
 with tab1:
-    st.subheader("How do sleep hours and study hours per day influence students stress levels?")
+    st.subheader("How do sleep hours per day influence students stress levels?")
 
     df["sleep_group"] = pd.cut(
         df["sleep_hours"],
@@ -92,15 +92,14 @@ with tab1:
         y="stress_level",
         opacity=0.5,
         color="sleep_group",
-        size="study_hours_per_day",
-        size_max=15,
         color_discrete_map=sleep_color_map,
         category_orders={"sleep_group": ["Very Low", "Low", "Moderate", "High", "Very High"]},
-        title="Sleep Hours vs Stress Level (sized by Study Hours)"
+        title="Sleep Hours vs Stress Level"
     )
+    fig.update_traces(marker=dict(size=10))
 
     fig.update_layout(
-        title="Sleep Hours vs Stress Level (sized by Study Hours)",
+        title="Sleep Hours vs Stress Levelapp",
         xaxis_title="Sleep Hours",
         yaxis_title="Stress Level"
 )   
