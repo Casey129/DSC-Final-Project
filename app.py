@@ -8,6 +8,7 @@ df = pd.read_csv("student_mental_health_burnout_200.csv")
 st.dataframe(df.head())
 st.caption("**Data Source:** Student Lifestyle, Mental Health & Burnout Insight — [Kaggle](https://www.kaggle.com/datasets/ayeshasiddiqa123/student-health)")
 
+
 sleep_color_map={
     "Very Low":  "#d73027",
     "Low":       "#fc8d59",
@@ -42,8 +43,6 @@ df = df[df["academic_year"].isin(year_filter)]
 
 #Q1 Visual
 st.subheader("How do sleep hours and study hours per day influence students stress levels?")
-df_sample = df.sample(n=min(sample_size, len(df)))
-
 
 df["sleep_group"] = pd.cut(
     df["sleep_hours"],
@@ -51,19 +50,23 @@ df["sleep_group"] = pd.cut(
     labels=["Very Low", "Low", "Moderate", "High", "Very High"]
 )
 
+df_sample = df.sample(n=min(sample_size, len(df)))
+
 fig = px.scatter(
-    df,
+    df_sample,
     x="sleep_hours",
     y="stress_level",
     opacity=0.5,
     color="sleep_group",
+    size="study_hours_per_day",
+    size_max=15,
     color_discrete_map=sleep_color_map,
     category_orders={"sleep_group": ["Very Low", "Low", "Moderate", "High", "Very High"]},
-    title="Sleep vs Stress"
+    title="Sleep Hours vs Stress Level (sized by Study Hours)"
 )
 
 fig.update_layout(
-    title="Sleep vs Stress",
+    title="Sleep Hours vs Stress Level (sized by Study Hours)",
     xaxis_title="Sleep Hours",
     yaxis_title="Stress Level"
 )
@@ -75,9 +78,6 @@ st.caption(
 
 #Q2 Visual 
 st.subheader("How does exam pressure influence academic performance and mental health?​")
-
-df_sample = df.sample(n=min(sample_size, len(df)))
-
 
 df["pressure_group"] = pd.qcut(
     df["exam_pressure"],
@@ -127,12 +127,14 @@ df["activity_level"] = df["physical_activity"].apply(
     lambda x: "Active" if x >= 3 else "Sedentary"
 )
 
-df_grouped = df.groupby(
+df_sample = df.sample(n=min(sample_size, len(df)))
+
+df_grouped = df_sample.groupby(
     ["sleep_category", "activity_level"]
 )["mental_health_index"].mean().reset_index()
 
 fig = px.bar(
-    df_grouped,
+    df_grouped, 
     x="sleep_category",
     y="mental_health_index",
     color="activity_level",
@@ -143,6 +145,12 @@ fig = px.bar(
         "Sedentary": "#fc8d59"
     },
     title="Average Mental Health Index by Sleep and Activity"
+)
+
+fig.update_layout(
+    title="Average Mental Health Index by Sleep and Activity",
+    xaxis_title="Sleep",
+    yaxis_title="Mental Health Index",
 )
 
 st.plotly_chart(fig, use_container_width=True)
@@ -212,7 +220,7 @@ st.subheader("How does financial stress and family expectations impact mental he
 df_sample = df.sample(n=min(sample_size, len(df)))
 
 fig=px.density_heatmap(
-    df,
+    df_sample, 
     x="financial_stress",
     y="family_expectation",
     z="mental_health_index",
@@ -229,6 +237,5 @@ fig.update_layout(
 
 st.plotly_chart(fig, width="stretch")
 st.caption("explination"
-
 )
  
