@@ -272,8 +272,8 @@ with tab5:
     )
 
     st.plotly_chart(fig, width="stretch")
-    st.caption("explanation"
-    )
+    st.caption("Our analysis shows that the more money stress hurts mental health, and family pressure makes it worse.The colors red and orange mean better mental health while blue means that it is worse.") 
+    
 with tab6:
     st.subheader("📌 Key Takeaways")
     st.markdown("""
